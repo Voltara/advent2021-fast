@@ -1,6 +1,7 @@
 #include "advent2021.h"
 
 output_t day08(input_t in) {
+	// Convert input letters to a bitmask and length
 	auto parse_slug = [](char *&p) {
 		int slug = 0;
 		auto begin = p;
@@ -10,14 +11,23 @@ output_t day08(input_t in) {
 		return std::make_pair(slug, p - begin);
 	};
 
+	// Easy lengths: 2, 3, 4, 7
 	auto is_easy_length = [](int len) {
-		return (0x9c >> len) & 1;
+		return (0b10011100 >> len) & 1;
 	};
 
+	/* Lookup by number of segments, returning either the
+	 * digit (for the easy lengths), or an offset for later
+	 * lookup in the by_magic() table.
+	 */
 	auto by_length = [](int len) {
 		return (0x8fb47100 >> (len * 4)) & 0xf;
 	};
 
+	/* Second-tier lookup table for digits with 5 or 6 segments.
+	 * The lookup index incorporates segment count, bitwise-and
+	 * of the easy digit segments, and their bitwise-xor.
+	 */
 	auto by_magic = [](int magic) {
 		return (0x09600325 >> (magic * 4)) & 0xf;
 	};

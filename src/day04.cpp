@@ -17,7 +17,7 @@ output_t day04(input_t in) {
 
 	std::vector<int> board_sum(NUM_BOARDS);
 
-	// Build an map from each number to the boards/positions where they appear
+	// Map each draw to the boards/positions where they occur
 	char *p = in.s + (INPUT_LEN - BOARDS_LEN);
 	char *end_numbers = p;
 

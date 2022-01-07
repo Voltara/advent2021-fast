@@ -1,10 +1,17 @@
 #include "advent2021.h"
 
+/* Performs a line sweep over the map, identifying contiguous intervals
+ * of basin (0-8) locations.  These intervals are joined with the previous
+ * row using a disjoint set data structure which tracks the size and low
+ * point of each basin.
+ */
+
 namespace {
 
+// Open interval [lo, hi)
 struct interval {
 	interval *parent;
-	uint8_t lo, hi;    // [lo, hi)
+	uint8_t lo, hi;
 	uint8_t min, size;
 
 	interval() {
@@ -34,6 +41,7 @@ struct interval {
 	}
 };
 
+// Allocation pool
 struct interval_pool {
 	std::vector<interval> pool;
 	int size;
